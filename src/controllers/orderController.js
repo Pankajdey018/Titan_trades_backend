@@ -1,5 +1,6 @@
 import Order from "../models/OrderModel.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import ApiError from "../utils/apiError.js";
 import { executeOrder } from "../services/tradeEngineService.js";
 
 const placeOrder = asyncHandler(async (req, res) => {
@@ -28,4 +29,31 @@ const getOrderHistory = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, count: orders.length, orders });
 });
 
-export { placeOrder, getOrderHistory };
+const getOrderById = asyncHandler(async (req, res) => {
+  const order = await Order.findOne({ _id: req.params.id, userId: req.user._id.toString() });
+
+  if (!order) {
+    throw new ApiError(404, "Order not found");
+  }
+
+  res.status(200).json({ success: true, order });
+});
+
+const cancelOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findOne({ _id: req.params.id, userId: req.user._id.toString() });
+
+  if (!order) {
+    throw new ApiError(404, "Order not found");
+  }
+
+  if (order.status === "EXECUTED") {
+    throw new ApiError(400, "Executed orders cannot be cancelled");
+  }
+
+  order.status = "CANCELLED";
+  await order.save();
+
+  res.status(200).json({ success: true, message: "Order cancelled", order });
+});
+
+export { placeOrder, getOrderHistory, getOrderById, cancelOrder };

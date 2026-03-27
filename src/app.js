@@ -5,6 +5,10 @@ import connectDB from "./database/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import portfolioRoutes from "./routes/portfolioRoutes.js";
+import stockRoutes from "./routes/stockRoutes.js";
+import tradeRoutes from "./routes/tradeRoutes.js";
+import watchlistRoutes from "./routes/watchlistRoutes.js";
+import fundRoutes from "./routes/fundRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -35,6 +39,10 @@ app.get("/health", (req, res) => {
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/portfolio", portfolioRoutes);
+app.use("/api/v1/stocks", stockRoutes);
+app.use("/api/v1/trades", tradeRoutes);
+app.use("/api/v1/watchlist", watchlistRoutes);
+app.use("/api/v1/funds", fundRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
