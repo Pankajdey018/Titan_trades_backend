@@ -41,17 +41,6 @@ Sample body:
 ### Health
 - `GET /health`
 
-## Environment Variables
-
-Create `.env`:
-
-```bash
-PORT=3000
-DB_URL=mongodb://localhost:27017/titan_trades
-JWT_SECRET=super-secret
-JWT_EXPIRES_IN=1d
-```
-
 ## Run
 
 ```bash
